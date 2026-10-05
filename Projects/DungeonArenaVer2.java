@@ -3,7 +3,7 @@ import java.util.Scanner;
 public class DungeonArenaVer2 {
     Scanner scan = new Scanner(System.in);
     Monsters [] enemy = new Monsters[5];
-    Items [] item = new Items[10];
+    Items item = new Items();
     int enemyType;
 
     DungeonArenaVer2(){
@@ -72,24 +72,27 @@ public class DungeonArenaVer2 {
         while(true) {
             System.out.println("----------------");
             System.out.printf("""
-                    Attack the Enemy
-                    [1] - %-8s | %d 
-                    %s
-                    [2] - %-8s | %d 
-                    %s%n""", character.attackName1, character.attack1Power, character.attack1Description, character.attackName2, character.attack2Power, character.attack2Description);
+                            Attack the Enemy
+                            [1] - %-12s | %d  | Cooldown: %d
+                            Description: %s
+                            [2] - %-12s | %d  | Cooldown: %d
+                            Description: %s
+                            [3] - Exit%n""", character.attackName1, character.attack1Power, 0, character.attack1Description,
+                    character.attackName2, character.attack2Power, character.attack2Cooldown, character.attack2Description);
             System.out.print(": ");
             move = scan.nextInt();
 
-            if ((move != 1) && (move != 2)) {
+            if (move == 3) {
+                break;
+            }
+
+            else if ((move != 1) && (move != 2)) {
                 System.out.println("Invalid Attack!");
                 continue;
             }
 
             System.out.println("----------------");
-            break;
-        }
 
-        while(true) {
             switch (move) {
                 case 1 -> {
                     System.out.println("You used " + character.attackName1);
@@ -117,6 +120,15 @@ public class DungeonArenaVer2 {
                 }
 
                 System.out.println("Your Health: " + character.health);
+                break;
+
+            }
+
+            else if (character.health <= 0) {
+                System.out.println("----------------");
+                System.out.println("Defeated! Try Again!");
+                System.out.println("----------------");
+                break;
             }
 
             else {
@@ -125,38 +137,70 @@ public class DungeonArenaVer2 {
                 enemy.isDefeated = true;
                 Monsters.activeMonsters--;
                 System.out.println("----------------");
+                break;
             }
         }
     }
 
-    void checkInventory(){
-        System.out.println("Available Inventory");
-        for (int j = 0; j < item.length; j++){
+    void checkInventory(Characters character){
+        while(true) {
+            System.out.println("----------------");
+            System.out.println("Available Inventory");
+            for (int j = 0; j < Items.numItems; j++){
+                System.out.printf("""
+                    [%d] - %-15s | %-15s | %d
+                    """, (j + 1), item.itemName[j], item.itemDescription[j], item.itemQuantity[j]);
+            }
+            System.out.printf("[%d] - Exit%n", Items.numItems + 1);
+            System.out.print(": ");
+            int itemChoice = scan.nextInt();
+            System.out.println("----------------");
 
+            if (itemChoice == (Items.numItems + 1)) {
+                break;
+            }
+
+            if (item.itemQuantity[itemChoice] <= 0) {
+                System.out.println("Invalid Item!");
+                continue;
+            }
+
+            item.useItem(character, itemChoice);
+            break;
         }
     }
 
     public static void main(String[] args) {
         DungeonArenaVer2 game = new DungeonArenaVer2();
+        int gameChoice;
 
         System.out.println("Dungeon Arena V2");
         System.out.println("----------------");
 
         Characters character = game.characterSelect();
-        Monsters enemy = game.enemySelect();
 
         while(Monsters.activeMonsters > 0) {
-            while (character.health > 0 && enemy.health > 0) {
-                game.attackOption(character, enemy);
+            Monsters enemy = game.enemySelect();
+            System.out.println("----------------");
 
-                if (character.health <= 0) {
-                    System.out.println("----------------");
-                    System.out.println("Defeated! Try Again!");
-                    System.out.println("----------------");
-                    break;
+            while (character.health > 0 && enemy.health > 0){
+                System.out.println("""
+                        Select Choice: 
+                        [1] - Attack 
+                        [2] - Check Inventory""");
+                System.out.print(": ");
+                gameChoice = game.scan.nextInt();
+
+                if (gameChoice == 1) {
+                    game.attackOption(character, enemy);
+                }
+
+                else if (gameChoice == 2) {
+                    game.checkInventory(character);
                 }
             }
         }
+
         game.scan.close();
     }
 }
@@ -403,30 +447,63 @@ class Items {
     int [] itemBuff = new int[4];
     double [] itemDropOdds = new double[4];
     String [] itemDescription = new String[4];
+    String [] itemFunction = new String[4];
+    int [] itemQuantity = new int[4];
+    static int numItems;
 
     Items(){
-        itemName[0] = "Minor Health Potion";
+        itemName[0] = "Health Potion";
         itemBuff[0] = 50;
         itemDropOdds[0] = 0.4;
         itemDescription[0] = "Heals 50 HP";
+        itemFunction[0] = "Heal";
+        itemQuantity[0] = 0;
+        numItems++;
 
         itemName[1] = "Whetstone";
         itemBuff[1] = 5;
         itemDropOdds[1] = 0.2;
         itemDescription[1] = "+5 Attack";
+        itemFunction[1] = "Attack";
+        itemQuantity[1] = 0;
+        numItems++;
 
         itemName[2] = "Iron Plating";
         itemBuff[2] = 5;
         itemDropOdds[2] = 0.2;
         itemDescription[2] = "+5 Defense";
+        itemFunction[2] = "Defense";
+        itemQuantity[2] = 0;
+        numItems++;
 
         itemName[3] = "Energy Vial";
         itemBuff[3] = 5;
         itemDropOdds[3] = 0.1;
         itemDescription[3] = "Resets Cooldown";
+        itemFunction[3] = "Cooldown";
+        itemQuantity[3] = 0;
+        numItems++;
     }
 
     void useItem(Characters hero, int itemChoice) {
+        if (itemChoice == 1) {
+            hero.health += itemBuff[itemChoice - 1];
+            System.out.println("You healed for " + itemBuff[itemChoice - 1]);
+        }
 
+        else if (itemChoice == 2) {
+            hero.attackPower += itemBuff[itemChoice - 1];
+            System.out.println("You increased your attack by " + itemBuff[itemChoice - 1]);
+        }
+
+        else if (itemChoice == 3) {
+            hero.defense += itemBuff[itemChoice - 1];
+            System.out.println("You increased your defense by " + itemBuff[itemChoice - 1]);
+        }
+
+        else if (itemChoice == 4) {
+            hero.attack2Cooldown = 0;
+            System.out.println("You refreshed all your skills!");
+        }
     }
 }
