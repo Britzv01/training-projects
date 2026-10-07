@@ -86,6 +86,11 @@ public class DungeonArenaVer2 {
                 break;
             }
 
+            else if (move == 2 && character.attack2Cooldown > 0) {
+                System.out.println("Skill in Cooldown!");
+                continue;
+            }
+
             else if ((move != 1) && (move != 2)) {
                 System.out.println("Invalid Attack!");
                 continue;
@@ -116,6 +121,9 @@ public class DungeonArenaVer2 {
 
                 if (character.health <= 0) {
                     System.out.println("Health: " + 0);
+                    System.out.println("----------------");
+                    System.out.println("Defeated! Try Again!");
+                    System.out.println("----------------");
                     break;
                 }
 
@@ -124,18 +132,19 @@ public class DungeonArenaVer2 {
 
             }
 
-            else if (character.health <= 0) {
-                System.out.println("----------------");
-                System.out.println("Defeated! Try Again!");
-                System.out.println("----------------");
-                break;
+            if (character.isAttack2OnCast) {
+                character.isAttack2OnCast = false;
+                continue;
             }
 
-            else {
+            character.attack2Cooldown--;
+
+            if (enemy.health <= 0) {
                 System.out.println("----------------");
                 System.out.println("You successfully defeated the enemy " + enemy.type);
                 enemy.isDefeated = true;
                 Monsters.activeMonsters--;
+                character.attack2Cooldown = 0;
                 System.out.println("----------------");
                 break;
             }
@@ -166,6 +175,7 @@ public class DungeonArenaVer2 {
             }
 
             item.useItem(character, itemChoice);
+            character.attack2Cooldown--;
             break;
         }
     }
@@ -199,6 +209,9 @@ public class DungeonArenaVer2 {
                     game.checkInventory(character);
                 }
             }
+            if (character.health <= 0) {
+                break;
+            }
         }
 
         game.scan.close();
@@ -219,6 +232,8 @@ class Characters {
     String attack1Description;
     String attack2Description;
     int attack2Cooldown;
+    boolean isAttack2InCooldown;
+    boolean isAttack2OnCast;
 
     Characters(String name, String role){
         this.name = name;
@@ -289,6 +304,7 @@ class Characters {
                 attackDamage = attack2Power * (attackPower / monster.defense);
                 monster.health -= (int) attackDamage;
                 attackPower += 5;
+                isAttack2OnCast  = true;
                 attack2Cooldown = 3;
             }
         }
@@ -310,6 +326,7 @@ class Characters {
                 }
 
                 attack2Cooldown = 2;
+                isAttack2InCooldown = true;
             }
         }
 
@@ -425,7 +442,7 @@ class Monsters {
         else if (enemy.equalsIgnoreCase("witch")){
             enemyAttackDamage = attack1Power * (attackPower / hero.defense);
             hero.health -= (int) enemyAttackDamage;
-            this.health += enemyAttackDamage;
+            this.health += (int) enemyAttackDamage;
             System.out.println("Enemy healed for " + enemyAttackDamage);
         }
 
