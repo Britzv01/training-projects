@@ -1,3 +1,5 @@
+package TestFiles;
+
 public class CarClass {
     String model;
     String color;
@@ -23,12 +25,12 @@ public class CarClass {
     }
 
     static void main() {
-       /* CarClass car1 = new CarClass("Honda", "Black");
-        CarClass car2 = new CarClass("Mitsubishi", "White");
-        CarClass car3 = new CarClass("Ferrari", "Red");
-        CarClass car4 = new CarClass("Window", "Windshield", "Handle", "Brake");
+       /* TestFiles.CarClass car1 = new TestFiles.CarClass("Honda", "Black");
+        TestFiles.CarClass car2 = new TestFiles.CarClass("Mitsubishi", "White");
+        TestFiles.CarClass car3 = new TestFiles.CarClass("Ferrari", "Red");
+        TestFiles.CarClass car4 = new TestFiles.CarClass("Window", "Windshield", "Handle", "Brake");
 
-        CarClass[] cars = {car1, car2, car3, car4};
+        TestFiles.CarClass[] cars = {car1, car2, car3, car4};
        */
 
         CarClass[] cars = {new CarClass("Honda,", "Black"), new CarClass("Mustang", "Blue")};

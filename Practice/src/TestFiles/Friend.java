@@ -1,3 +1,5 @@
+package TestFiles;
+
 public class Friend {
     String name;
     static int numFriends;

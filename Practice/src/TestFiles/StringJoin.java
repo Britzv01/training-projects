@@ -1,3 +1,5 @@
+package TestFiles;
+
 public class StringJoin {
         public static void main() {
                 // Joining Strings

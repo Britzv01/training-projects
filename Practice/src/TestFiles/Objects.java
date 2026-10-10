@@ -1,3 +1,5 @@
+package TestFiles;
+
 import java.util.Scanner;
 
 public class Objects {

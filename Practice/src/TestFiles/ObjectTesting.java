@@ -1,7 +1,9 @@
+package TestFiles;
+
 public class ObjectTesting {
     public static void main (String [] args){
-        //Student student1 = new Student("Onycah", 20, 3.75);
-        //Student student2 = new Student("Danzhel", 20, 3.5);
+        //TestFiles.Student student1 = new TestFiles.Student("Onycah", 20, 3.75);
+        //TestFiles.Student student2 = new TestFiles.Student("Danzhel", 20, 3.5);
 
         //System.out.println(student1.name + student1.age + student1.gpa + student1.isEnrolled);
         //System.out.println(student2.name + student2.age + student2.gpa + student2.isEnrolled);
@@ -9,10 +11,10 @@ public class ObjectTesting {
         //student1.study();
         //student2.study();
 
-        /*UserConstructor user1 = new UserConstructor("Onycah");
-        UserConstructor user2 = new UserConstructor("Danzhel", "danzhel@gmail.com");
-        UserConstructor user3 = new UserConstructor("Danycah", "danycahganda@gmail.com", 20);
-        UserConstructor user4 = new UserConstructor();
+        /*TestFiles.UserConstructor user1 = new TestFiles.UserConstructor("Onycah");
+        TestFiles.UserConstructor user2 = new TestFiles.UserConstructor("Danzhel", "danzhel@gmail.com");
+        TestFiles.UserConstructor user3 = new TestFiles.UserConstructor("Danycah", "danycahganda@gmail.com", 20);
+        TestFiles.UserConstructor user4 = new TestFiles.UserConstructor();
 
         System.out.println(user1.username);
         System.out.println(user1.email);
