@@ -2,10 +2,12 @@ package SlayTheSpire.CardLogic;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Random;
 
 public class DeckPile {
 
     ArrayList<Card> deck = new ArrayList<>();
+    Random random = new Random();
 
     private int initialDeckQuantity = 6;
     private String [] initialDeckCards = {"Ricochet", "Neutralize", "Strike", "Block", "Blur", "Cloak"};
@@ -38,11 +40,15 @@ public class DeckPile {
         return deck.get(index);
     }
 
-    public Card drawCard(int index){
-        return deck.get(index);
+    public Card drawCard(){
+        Card drawnCard = deck.get(random.nextInt(totalDeckCards));
+        deck.remove(drawnCard);
+        totalDeckCards--;
+        return drawnCard;
     }
 
-    public Card returnDeck(){
+    public void returnDeck(){
+
     }
 
     public void shuffleDeck(){

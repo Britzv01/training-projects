@@ -15,8 +15,10 @@ public abstract class Card {
 
     void displayCard(){
         System.out.printf("""
-                | Name: %-10s | Energy: %d
-                | Type: %-10s | Description: %s%n
+                 ------------------------------------
+                | Name: %-10s | Energy: %-10d
+                | Type: %-10s | Description: %-10s
+                 ------------------------------------
                 """, name, energy, type, description);
     }
 

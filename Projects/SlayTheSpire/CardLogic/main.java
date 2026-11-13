@@ -6,7 +6,10 @@ public class main {
         DeckPile deck = new DeckPile(generator);
         HandPile hand = new HandPile(deck);
 
-        hand.displayHand();
+        deck.drawCard();
+        deck.displayDeck();
+
+
 
     }
 }
