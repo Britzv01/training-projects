@@ -34,8 +34,15 @@ public class DeckPile {
         totalDeckCards--;
     }
 
+    public Card getCard(int index){
+        return deck.get(index);
+    }
+
     public Card drawCard(int index){
         return deck.get(index);
+    }
+
+    public Card returnDeck(){
     }
 
     public void shuffleDeck(){

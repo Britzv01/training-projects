@@ -11,7 +11,7 @@ public class DiscardPile {
         this.totalDiscardCards = 0;
     }
 
-    void discardCard(DeckPile deck){
+    void discardCard(HandPile hand){
         totalDiscardCards++;
     }
 
@@ -21,7 +21,6 @@ public class DiscardPile {
         }
     }
 
-    void returnDeck(){
-
+    void returnDeck(DeckPile deck){
     }
 }

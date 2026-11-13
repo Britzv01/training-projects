@@ -20,13 +20,6 @@ public abstract class Card {
                 """, name, energy, type, description);
     }
 
-    public String toString(){
-        return String.format("""
-                | Name: %-10s | Energy: %d
-                | Type: %-10s | Description: %s%n
-                """, name, energy, type, description);
-    };
-
     String getName(){
         return this.name;
     }
