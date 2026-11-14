@@ -1,18 +1,16 @@
 package SlayTheSpire.CardLogic;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.LinkedHashMap;
 
 public class HandPile {
-    private HashMap<String, Card> hand = new HashMap<>();
+    private LinkedHashMap<String, Card> hand = new LinkedHashMap<>();
     private final int defaultInitialCards = 4;
-    private int totalHandCards;
+    int totalHandCards;
 
     public HandPile(DeckPile deck) {
         for (int i = 0; i < defaultInitialCards; i++) {
-            hand.put(deck.getCard(i).getName(), deck.getCard(i));
+            Card drawnCard = deck.drawCard();
+            hand.put(drawnCard.getName(), drawnCard);
         }
 
         totalHandCards = hand.size();
@@ -25,6 +23,18 @@ public class HandPile {
     }
 
     public Card getCard(String name){
+        // add more
         return hand.get(name);
+    }
+
+    public void removeCard(String name){
+        hand.remove(name);
+        totalHandCards--;
+    }
+
+    public void deckDraw(DeckPile deck){
+        Card drawnCard = deck.drawCard();
+        hand.put(drawnCard.getName(), drawnCard);
+        totalHandCards++;
     }
 }
